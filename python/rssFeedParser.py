@@ -45,7 +45,7 @@ def main():
     global tokens
 
     # Trefwoorden
-    text_file = open("trefwoorden.txt", "r")
+    text_file = open("../data/trefwoorden.txt", "r")
     trefwoorden = text_file.read().split('\n')
     print(trefwoorden)
 

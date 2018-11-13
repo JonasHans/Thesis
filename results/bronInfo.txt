@@ -1,0 +1,7 @@
+Number of features:  63
+
+Total number of fields:  7807590
+
+Total filled in:  3018191
+
+Percentage:  38.657140039371946
