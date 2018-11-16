@@ -52,11 +52,11 @@ def analyzeBRON(bron):
 	print('Percentage: ', (filled/total)*100)
 
 # shows information on result set
-def resultsInfo(fileName, results):
+def queryResultsInfo(fileName, results):
 	global UNIQUE_IDENTIFIER
 
 	# Print feature information
-	f = open('../results/'+fileName+'-'+UNIQUE_IDENTIFIER+'.txt', "w")
+	f = open('../results/'+fileName+'-'+UNIQUE_IDENTIFIER+'.txt', "a")
 	f.write("Total number of features: "+str(len(list(results))) + "\n")
 	f.write("Feature names: \n")
 	for i in range(0, len(list(results)), 5):
@@ -68,6 +68,7 @@ def resultsInfo(fileName, results):
 	# Result set information
 	f.write('\n')
 	f.write('Total number of results: ' + str(len(results)) + '\n')
+	stats.to_csv(f)
 	# f.write(stats)
 
 @timeit
@@ -90,8 +91,9 @@ def indexBRON():
 	# Read in the BRON ongevallen.txt
 	# TODO: Define dtypes
 	# dropna => axis=1 means we look at the columns, how=all means we only drop the column if all values are NaN
+	# fillna all NaN values to zero
 	return [
-		pd.read_csv('../data/BRON2017/gegevens/Ongevallengegevens/ongevallen.txt', sep=',', index_col='VKL_NUMMER', low_memory=False).dropna(axis=1, how='all')
+		pd.read_csv('../data/BRON2017/gegevens/Ongevallengegevens/ongevallen.txt', sep=',', index_col='VKL_NUMMER', low_memory=False).dropna(axis=1, how='all').fillna(value=0)
 		]
 
 @timeit
@@ -107,8 +109,15 @@ def main():
 		'AP3_CODE' : 'DOD',
 		'DAGTYPE' : 'MA-VR'
 	}
+
+	# Write query object to file
+	f = open('../results/queryBron-'+UNIQUE_IDENTIFIER+'.txt', "w")
+	f.write('Query : ' + str(query) + '\n\n')
+	f.close()
+
+	# Execte query
 	qResult = queryBRON(bron_ongevallen, query)
-	resultsInfo('queryBron', qResult)
+	queryResultsInfo('queryBron', qResult)
 
 if __name__== "__main__":
 	main()

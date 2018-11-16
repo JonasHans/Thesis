@@ -1,4 +1,4 @@
-# This timing method was used from:
+# This timing decorator was taken from:
 # https://medium.com/pythonhive/python-decorator-to-measure-the-execution-time-of-methods-fa04cb6bb36d
 import time
 
