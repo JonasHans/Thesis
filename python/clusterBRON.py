@@ -10,6 +10,7 @@ from utils.timeit import timeit
 import matplotlib.pyplot as plt
 
 # clustering based on: https://towardsdatascience.com/unsupervised-learning-with-python-173c51dc7f03
+# TODO: https://machinelearningmastery.com/feature-selection-machine-learning-python/
 @timeit
 def cluster(dataset, algorithm):
 	# Retrieve only the integer features

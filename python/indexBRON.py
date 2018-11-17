@@ -1,5 +1,7 @@
+# Pandas
 import pandas as pd
-from pandas import ExcelWriter
+pd.set_option('display.expand_frame_repr', False) # show all collumns
+
 import matplotlib.pyplot as plt
 import numpy as np
 import time
@@ -68,7 +70,8 @@ def queryResultsInfo(fileName, results):
 	# Result set information
 	f.write('\n')
 	f.write('Total number of results: ' + str(len(results)) + '\n')
-	stats.to_csv(f)
+	results.head(25).to_csv(f)
+	# stats.to_csv(f)
 	# f.write(stats)
 
 @timeit
@@ -106,8 +109,8 @@ def main():
 
 	# Query the dataset
 	query = {
-		'AP3_CODE' : 'DOD',
-		'DAGTYPE' : 'MA-VR'
+		'MND_NUMMER' : str(12),
+		'AP3_CODE' : 'DOD'
 	}
 
 	# Write query object to file
@@ -117,6 +120,7 @@ def main():
 
 	# Execte query
 	qResult = queryBRON(bron_ongevallen, query)
+	print(qResult.loc[:,['JAAR_VKL','MND_NUMMER','UUR','DAGTYPE','GME_NAAM','AP3_CODE']])
 	queryResultsInfo('queryBron', qResult)
 
 if __name__== "__main__":
