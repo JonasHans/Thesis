@@ -1,0 +1,32 @@
+'lowerCaseTokens'  3.20 ms
+'removeStopwords'  4240.45 ms
+'trigramToken'  4.06 ms
+***************
+(('fietser', 'geschept', 'auto'), 17)
+(('fietsster', 'geschept', 'auto'), 7)
+(('fiets', 'geschept', 'auto'), 7)
+(('man', 'geschept', 'personenauto'), 6)
+(('zondagmiddag', 'geschept', 'motorrijder'), 4)
+(('scooter', 'geschept', 'auto'), 4)
+(('maandagmiddag', 'geschept', 'auto'), 3)
+(('werden', 'geschept', 'auto'), 3)
+(('fiets', 'geschept', 'automobilist'), 3)
+(('daarbij', 'geschept', 'auto'), 3)
+(('motor', 'geschept', 'auto'), 3)
+(('oversteken', 'geschept', 'auto'), 3)
+(('meisje', 'geschept', 'auto'), 3)
+(('vrouw', 'geschept', 'auto'), 3)
+(('geraakt', 'geschept', 'auto'), 3)
+***************
+('geschept', 269)
+('2018', 250)
+('auto', 206)
+('woorden', 204)
+('200', 203)
+('documents', 200)
+('length', 200)
+('http', 186)
+('fietser', 136)
+('gewond', 114)
+'tokenizeText'  4418.87 ms
+'main'  4418.88 ms

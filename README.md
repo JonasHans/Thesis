@@ -7,6 +7,11 @@ Weekly progress is updated in [issues](../../issues)
 
 # Frameworks
 
+## NLTK resources
+- maxent_ne_chunker (NAMED ENTITY RECOGNITION)
+- stopwords
+- averaged_perceptron_tagger (POS TAG)
+
 ## Rss feed parser
 pip3 install feedparser
 
