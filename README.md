@@ -17,3 +17,8 @@ pip3 install feedparser
 
 ## XML to python dict
 pip3 install untangle
+
+# Progress
+
+## Issues
+- Hoe te bepalen wat daadwerkelijke artikelen over verkeersongelukken zijn

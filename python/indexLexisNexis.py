@@ -42,12 +42,6 @@ def tokenizeText(fileText):
 
 @timeit
 def querySentences(query, sentences):
-	# result = []
-	# for sent in sentences:
-	# 	print(sent)
-	# 	if all(elem in sent for elem in query):
-	# 		result.append(sentences[sent])
-	# return result
 	return list(filter(lambda sent: all(elem in sent for elem in query),sentences))
 
 
@@ -88,12 +82,29 @@ def removeStopwords(tokens):
 	return list(filter(lambda word: (word.lower() not in stopwords.words('dutch')) and (word.isalpha() or word.isdigit())  ,tokens))
 
 @timeit
+# Method which returns all results associated with the query
+def queryDataFrame(dataFrame, query):
+	qString = ''
+
+	# Build query string
+	for term in query:
+		if qString == '':
+			qString = term + '==\"' + query[term] + '\"'
+		else:
+			qString += ' & '+ term + '==\"' + query[term] + '\"'
+
+	# Execute query on the set
+	return dataFrame.query(qString)
+
+@timeit
 def main():
-	# articles = indexLexisNexis()
-	data = LexisNexisHTMLParser('../data/html#1.HTML')
-	# print(data.getAllTitles())
-	[tokens, tokensClean, sentences] = tokenizeText(data.getAllTitles())
-	trigram(tokensClean)
+	data = LexisNexisHTMLParser('../data/html#1.HTML', True)
+	results = data.dataFrame[data.dataFrame['journal'].str.contains("Algemeen")]
+	print(results)
+	# printList(data.getAllTitles())
+	# [tokens, tokensClean, sentences] = tokenizeText("".join(data.getAllText()))
+	# trigram(tokensClean)
+
 	# printList(querySentences(['geschept'], sentences))
 	# namedEntityRecognition(sentences)
 

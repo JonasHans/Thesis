@@ -1,14 +1,2 @@
-'removeStopwords'  4182.44 ms
-<filter object at 0x7fa722cab3c8>
-('geschept', 266)
-('2018', 250)
-('auto', 204)
-('woorden', 204)
-('200', 203)
-('DOCUMENTS', 200)
-('LENGTH', 200)
-('http', 186)
-('gewond', 114)
-('ongeluk', 108)
-'tokenizeText'  4362.40 ms
-'main'  4362.41 ms
+'parseFile'  339.67 ms
+'createDataFrame'  11.01 ms

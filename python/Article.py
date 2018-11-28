@@ -18,3 +18,12 @@ class Article:
 		print(self.journal)
 		print(self.link)
 		print(self.date)
+
+	def getArticle(self):
+		return {
+			'title' : self.title,
+			'text' : self.text,
+			'journal' : self.journal,
+			'link' : self.link,
+			'date' : self.date
+		}
