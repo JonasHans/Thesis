@@ -2,6 +2,8 @@
 import pandas as pd
 pd.set_option('display.expand_frame_repr', False) # show all collumns
 
+import sys
+
 # Time keeping
 from utils.timeit import timeit
 
@@ -31,7 +33,7 @@ def printList(l):
 		print(i)
 	print("***************")
 
-@timeit
+
 def tokenizeText(fileText):
 	# Tokenize to tokens and sentences
 	tokens = nltk.word_tokenize(fileText)
@@ -40,7 +42,6 @@ def tokenizeText(fileText):
 
 	return [tokens, tokensClean, sentences]
 
-@timeit
 def querySentences(query, sentences):
 	return list(filter(lambda sent: all(elem in sent for elem in query),sentences))
 
@@ -65,18 +66,17 @@ def frequencyInfo(tokens):
 	fd = nltk.FreqDist(tokens)
 	printList(fd.most_common(50))
 
-@timeit
+
 def lowerCaseTokens(tokens):
 	return [token.lower() for token in tokens]
 
-@timeit
 def trigramToken(token, pos, trigrams):
 	if pos == -1:
 		return list(filter(lambda trigram: token in list(trigram), trigrams))
 	else:
 		return list(filter(lambda trigram: trigram[pos] == token, trigrams))
 
-@timeit
+
 def removeStopwords(tokens):
 	tokens = lowerCaseTokens(tokens)
 	return list(filter(lambda word: (word.lower() not in stopwords.words('dutch')) and (word.isalpha() or word.isdigit())  ,tokens))
@@ -84,6 +84,7 @@ def removeStopwords(tokens):
 @timeit
 # Method which returns all results associated with the query
 def queryDataFrame(dataFrame, query):
+	# results = data.dataFrame[data.dataFrame['journal'].str.contains("Algemeen")]
 	qString = ''
 
 	# Build query string
@@ -99,10 +100,18 @@ def queryDataFrame(dataFrame, query):
 @timeit
 def main():
 	data = LexisNexisHTMLParser('../data/html#1.HTML', True)
-	results = data.dataFrame[data.dataFrame['journal'].str.contains("Algemeen")]
-	print(results)
-	# printList(data.getAllTitles())
-	# [tokens, tokensClean, sentences] = tokenizeText("".join(data.getAllText()))
+
+	ongevallen = {}
+	for index, row in data.dataFrame.iterrows():
+		[tokens, tokensClean, sentences] = tokenizeText(row['title'])
+		result = querySentences(['geschept'], tokensClean)
+
+		if (result):
+			ongevallen['V'] = result[0][0]
+
+			print(trigram(tokensClean))
+
+	# [tokens, tokensClean, sentences] = tokenizeText("".join(data.dataFrame['text']))
 	# trigram(tokensClean)
 
 	# printList(querySentences(['geschept'], sentences))
