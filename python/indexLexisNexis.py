@@ -1,6 +1,6 @@
 # Pandas
 import pandas as pd
-pd.set_option('display.expand_frame_repr', False) # show all collumns
+pd.option_context('display.expand_frame_repr', False,'display.max_rows', None, 'display.max_columns', None) # show all collumns
 
 import sys
 
@@ -10,12 +10,18 @@ from utils.timeit import timeit
 # NLTK
 import nltk
 from nltk.corpus import stopwords
+from nltk.tree import Tree
+from nltk.corpus import conll2002
 
 # Counter
 from collections import Counter
 
 # Lexis nexis html
 from lexisNexisHTMLParser import LexisNexisHTMLParser
+from languageParser import LanguageParser
+
+# NER (labels from NLTK book chap. 7)
+labels = ['PERSON', 'GPE', 'ORGANIZATION', 'LOCATION', 'DATE', 'TIME', 'MONEY', 'PERCENT', 'FACILITY']
 
 @timeit
 def indexLexisNexis():
@@ -46,12 +52,30 @@ def querySentences(query, sentences):
 	return list(filter(lambda sent: all(elem in sent for elem in query),sentences))
 
 
-@timeit
 def namedEntityRecognition(sentences):
-	posTags = nltk.pos_tag(sentences)
-	# printList(list(filter(lambda x: x[0] == 'auto',posTags)))
+	nedTrain = conll2002.chunked_sents('ned.train') # In Dutch
+	print(nedTrain)
+	# Create posTags
+	posTags = nltk.pos_tag(nltk.word_tokenize("".join(sentences)))
+
 	# Named Entity Recognition
-	# nltk.ne_chunk(sentences)
+	nerTagged = nltk.ne_chunk(posTags)
+
+	# Find all named enities
+	return findNE(nerTagged)
+
+# Method which returns all Named entities in the given chunks
+def findNE(chunks):
+	global labels
+	entities = {}
+
+	for chunk in chunks.subtrees():
+		if chunk.label() in labels:
+			if chunk.label() in entities.keys():
+				entities[chunk.label()].append(chunk.leaves()[0][0])
+			else:
+				entities[chunk.label()] = [chunk.leaves()[0][0]]
+	return entities
 
 @timeit
 def trigram(tokens):
@@ -99,23 +123,30 @@ def queryDataFrame(dataFrame, query):
 
 @timeit
 def main():
+	# Parse HTMl data
 	data = LexisNexisHTMLParser('../data/html#1.HTML', True)
 
-	ongevallen = {}
+	# Dict for named entities
+	dataNER = {}
+
+	# Loop through articles
 	for index, row in data.dataFrame.iterrows():
 		[tokens, tokensClean, sentences] = tokenizeText(row['title'])
-		result = querySentences(['geschept'], tokensClean)
+		# dataNER[index] = namedEntityRecognition(sentences)
 
-		if (result):
-			ongevallen['V'] = result[0][0]
+		spacyParser = LanguageParser()
+		spacyParser.NER("".join(sentences))
+		print("------------------------------")
+		# break
 
-			print(trigram(tokensClean))
+	# ner = pd.DataFrame(dataNER).transpose()
+	# print(ner)
+	# ner.to_csv('../results/textNER.csv')
 
 	# [tokens, tokensClean, sentences] = tokenizeText("".join(data.dataFrame['text']))
 	# trigram(tokensClean)
 
 	# printList(querySentences(['geschept'], sentences))
-	# namedEntityRecognition(sentences)
 
 if __name__== "__main__":
 	main()
