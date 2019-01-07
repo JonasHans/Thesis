@@ -1,0 +1,67 @@
+'parseFile'  437.29 ms
+'createDataFrame'  18.03 ms
+                            GPE           ...                            PERSON
+0                    [Schiedam]           ...                      [Voetganger]
+1                [Automobilist]           ...                        [Hofplein]
+2        [Voetganger, Schiedam]           ...                               NaN
+3                      [Minder]           ...                               NaN
+4                      [Minder]           ...                               NaN
+5                           NaN           ...                               NaN
+6                     [Chinese]           ...                               NaN
+7          [Fietser, Mijdrecht]           ...                               NaN
+8                           NaN           ...                               NaN
+9                 [Vlaardingen]           ...                               NaN
+10               [Automobilist]           ...                               NaN
+11         [Fietser, Eindhoven]           ...                               NaN
+12         [Fietser, Eindhoven]           ...                               NaN
+13                [Socialisten]           ...                               NaN
+14         [Fietser, Veldhoven]           ...                               NaN
+15                          NaN           ...                               NaN
+16         [Fietser, Hilversum]           ...                               NaN
+17                [Steenbergen]           ...                               NaN
+18                [Steenbergen]           ...                               NaN
+19                          NaN           ...                 [Fietser, Isselt]
+20             [Vrouw, Woerden]           ...                               NaN
+21           [Fietser, Woerden]           ...                               NaN
+22                [Steenbergen]           ...                               NaN
+23                [Steenbergen]           ...                               NaN
+24                [Steenbergen]           ...                               NaN
+25                          NaN           ...                       [Fietsster]
+26                      [Breda]           ...                               NaN
+27                 [Wielrenner]           ...                               NaN
+28                      [Breda]           ...                               NaN
+29                          NaN           ...                          [Rossum]
+..                          ...           ...                               ...
+170                   [Fietser]           ...                       [Hilversum]
+171                       [Erp]           ...                         [Tractor]
+172                       [Erp]           ...                         [Tractor]
+173                  [Boerdonk]           ...                         [Tractor]
+174                         NaN           ...                 [Kampen, Woerden]
+175                         NaN           ...                               NaN
+176                         NaN           ...                             [Ter]
+177               [Erasmuslaan]           ...                               NaN
+178               [Erasmuslaan]           ...                               NaN
+179                 [Barneveld]           ...                       [Fietsster]
+180       [Motorrijder, Vessem]           ...                               NaN
+181                    [Vessem]           ...                               NaN
+182         [Ernstige, Tilburg]           ...                               NaN
+183                   [Politie]           ...                               NaN
+184  [Scooterrijder, Purmerend]           ...                               NaN
+185                       [Dit]           ...                               NaN
+186                       [Dit]           ...                               NaN
+187                       [Dit]           ...                               NaN
+188                    [Aantal]           ...                     [Rotterdamse]
+189                         NaN           ...            [Rotterdamse, Bergweg]
+190                      [Vijf]           ...                               NaN
+191                         NaN           ...                               NaN
+192            [Facebookpagina]           ...                               NaN
+193                      [Plek]           ...              [Omroep, Spoordrama]
+194                      [Laat]           ...                               NaN
+195         [Burgemeester, Oss]           ...                             [Oss]
+196                       [Oss]           ...                               NaN
+197                 [Apeldoorn]           ...                               NaN
+198          [Fietser, Leerdam]           ...                               NaN
+199           [Man, Woudrichem]           ...                               NaN
+
+[200 rows x 3 columns]
+'main'  2371.31 ms

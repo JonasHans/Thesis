@@ -1,5 +1,6 @@
 # Python libs
 from collections import Counter
+import pickle
 
 # Pandas
 import pandas as pd
@@ -18,11 +19,22 @@ from informationRetrieval import InformationRetrieval
 @timeit
 def main():
 	# Parse HTMl data
-	loadLexisNexis = True
-	data = LexisNexisHTMLParser(loadLexisNexis)
-	# print(data.dataFrame)
+	# loadLexisNexis = True
+	# data = LexisNexisHTMLParser(loadLexisNexis)
 	# print(data.dataFrame.describe())
-	ir(data)
+
+	# ir(data)
+
+	categoriesInfo()
+
+def categoriesInfo():
+	cats = pickle.load(open( "categories.pkl", "rb" ))
+	for key in cats:
+		if key[0] == 'auto':
+			print(key)
+			for x in Counter(cats[key]).most_common():
+				print(x)
+			print()
 
 def ir(data):
 	# Spacy parser
@@ -37,13 +49,17 @@ def ir(data):
 		ir.createDependencies('text')
 		ir.writeDataFrames()
 
-	# print(ir.dependencies['title'].loc['auto'])
-	# print(ir.dependencies['title'].loc['Fietser'])
-	# print(ir.dependencies['title'].loc['fietser'])
-	# print(ir.dependencies['title'].loc['Fietsster'])
+	# ir.sentenceDepencyRelations()
 
-	ir.dependencies['text']['sum'] = pd.Series(ir.dependencies['text'].sum(axis=1), index=ir.dependencies['text'].index)
-	print(ir.dependencies['text'].sort_values(by='sum', ascending=False))
+	# print(ir.dependencies['text'].loc['auto'])
+	# print(ir.dependencies['text'].loc['automobilist'])
+	# print(ir.dependencies['text'].loc['fiets'])
+	# print(ir.dependencies['text'].loc['fietser'])
+
+# ir.dependencies['text']
+def rankListBySum(toRank):
+	toRank['sum'] = pd.Series(toRank.sum(axis=1), index=toRank.index)
+	print(toRank.sort_values(by='sum', ascending=False))
 
 if __name__== "__main__":
 	main()
