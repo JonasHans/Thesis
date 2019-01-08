@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import uuid
 import pandas as pd
+from collections import Counter
 
 # Time keeping
 from utils.timeit import timeit
@@ -11,6 +12,7 @@ from Article import Article
 class LexisNexisHTMLParser():
 	# Variables shared by all instances
 	index = 0
+	infoCounts = []
 
 	def __init__(self, load):
 		# Variables specific to instance
@@ -49,6 +51,7 @@ class LexisNexisHTMLParser():
 		self.parseFile('../data/ongeval_1-200.HTML', 'ongeval')
 		self.parseFile('../data/ongeval_201-400.HTML', 'ongeval')
 		self.parseFile('../data/ongeval_401-600.HTML', 'ongeval')
+		print("Divs count in documents: ", Counter(self.infoCounts))
 
 	@timeit
 	def parseFile(self, fileName, setLabel):
@@ -57,7 +60,15 @@ class LexisNexisHTMLParser():
 
 		allAelements = html.find_all('a')
 		for el in allAelements:
-			divs = el.find_all_next('div', limit=7)
+
+			# Calculate the amount of divs this article contains (6 variants)
+			divs = []
+			for sibling in el.next_siblings:
+				if sibling.name == 'a':
+					break
+				elif sibling.name == 'div':
+					divs.append(sibling)
+			self.infoCounts.append(len(divs))
 
 			# Select biggest div as text
 			size = 0
@@ -65,13 +76,21 @@ class LexisNexisHTMLParser():
 				if len(div.get_text()) > size:
 					biggestDiv = div
 					size = len(div.get_text())
-
-			# Create the article data
-			journal = divs[1].get_text()
-			link = divs[2].get_text()
-			date = divs[3].get_text()
-			title = divs[4].get_text()
 			text = biggestDiv.get_text()
+
+			# Article contains 7 divs
+			if len(divs) == 7:
+				# Create the article data
+				journal = divs[1].get_text()
+				link = divs[2].get_text()
+				date = divs[3].get_text()
+				title = divs[4].get_text()
+			else:
+				# Create the article data
+				journal = divs[len(divs)-1].get_text()
+				link = divs[1].get_text()
+				date = divs[2].get_text()
+				title = divs[3].get_text()
 
 			# Add the article
 			article = Article(title, text, journal, link, date, setLabel)

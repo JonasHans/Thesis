@@ -19,13 +19,13 @@ from informationRetrieval import InformationRetrieval
 @timeit
 def main():
 	# Parse HTMl data
-	# loadLexisNexis = True
-	# data = LexisNexisHTMLParser(loadLexisNexis)
-	# print(data.dataFrame.describe())
+	loadLexisNexis = False
+	data = LexisNexisHTMLParser(loadLexisNexis)
+	print(data.dataFrame)
 
 	# ir(data)
 
-	categoriesInfo()
+	# categoriesInfo()
 
 def categoriesInfo():
 	cats = pickle.load(open( "categories.pkl", "rb" ))
