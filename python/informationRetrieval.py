@@ -5,6 +5,7 @@ import pickle
 from utils.timeit import timeit
 
 # General information retrieval class
+@timeit
 class InformationRetrieval():
 
 	def __init__(self, parser, data):
@@ -12,6 +13,22 @@ class InformationRetrieval():
 		self.data = data
 		self.df = data.dataFrame
 		self.dependencies = {}
+
+	def countOccurences(self, feature, terms):
+		occurences = []
+
+		for index, row in self.df.iterrows():
+			text = row[feature]
+
+			validOccurence = True
+			for term in terms:
+				if not term in text:
+					validOccurence = False
+
+			if validOccurence:
+				occurences.append(text)
+
+		return occurences
 
 	@timeit
 	def sentenceDepencyRelations(self):
@@ -26,11 +43,10 @@ class InformationRetrieval():
 			if ((index%100) == 0):
 				print('Progress: '+str(progress)+'/'+str(len(self.df)))
 				progress += 100
-			text = row['text']
+			text = row['title']
 
 			# # select text which matches terms
 			if (termsA[0] in text) and (termsA[1] in text):
-
 				# select sentences which match terms
 				sents = self.parser.filterTextInSentences(text, termsA)
 
@@ -51,12 +67,6 @@ class InformationRetrieval():
 							categories[key] = [val]
 						else:
 							categories[key].append(val)
-					# i += 1
-
-			# if i == 100:
-			# 	break
-		# for key in categories:
-		# 	print(key, len(categories[key]))
 		pickle.dump( categories, open( "categories.pkl", "wb" ) )
 
 	@timeit

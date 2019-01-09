@@ -1,14 +1,16 @@
+# Generic python libs
 from bs4 import BeautifulSoup
-import uuid
 import pandas as pd
 from collections import Counter
 
 # Time keeping
 from utils.timeit import timeit
 
-# Article class
+# Custom classes
 from Article import Article
 
+# Class which parses lexis nexis html article downloads into a python class
+@timeit
 class LexisNexisHTMLParser():
 	# Variables shared by all instances
 	index = 0
@@ -51,14 +53,18 @@ class LexisNexisHTMLParser():
 		self.parseFile('../data/ongeval_1-200.HTML', 'ongeval')
 		self.parseFile('../data/ongeval_201-400.HTML', 'ongeval')
 		self.parseFile('../data/ongeval_401-600.HTML', 'ongeval')
-		print("Divs count in documents: ", Counter(self.infoCounts))
+		# print("Divs count in documents: ", Counter(self.infoCounts))
 
 	@timeit
 	def parseFile(self, fileName, setLabel):
+		# Open the file with html structured articles
 		f = open(fileName)
 		html = BeautifulSoup(f, 'html.parser')
 
+		# Find all 'a' elements which correspond to individual articles
 		allAelements = html.find_all('a')
+
+		# Go through all articles and structure each article into features
 		for el in allAelements:
 
 			# Calculate the amount of divs this article contains (6 variants)
@@ -97,7 +103,6 @@ class LexisNexisHTMLParser():
 			self.articles[self.index] = article.getArticle()
 			self.index += 1
 
-	@timeit
 	def createDataFrame(self):
 		self.dataFrame = pd.DataFrame(self.articles).transpose()
 
