@@ -29,6 +29,18 @@ class LanguageParser():
 
 		return deps
 
+	def sentences(self, text):
+		return nltk.sent_tokenize(text)
+
+	def doesTextContainTerm(self, text, goalToken):
+		if self.parser == 'spacy':
+			tokens = self.nlp(text)
+
+			for token in tokens:
+				if token.text == goalToken:
+					return True
+
+		return False
 	# Filter sentences in a text to only return those matching the filter
 	def filterTextInSentences(self, text, filter):
 		if self.parser == 'spacy':

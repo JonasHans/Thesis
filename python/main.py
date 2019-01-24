@@ -28,7 +28,7 @@ def main():
 	data = LexisNexisHTMLParser(loadLexisNexis)
 
 	# Define language parser
-	spacyParser = LanguageParser(parser='spacy')
+	spacyParser = LanguageParser(parser='nltk')
 
 	# Configure information retrieval
 	ir = InformationRetrieval(spacyParser, data)
@@ -37,44 +37,13 @@ def main():
 	analyzer = TANA(ir, loadIRdependencies, loadAnalytics)
 
 	# Basic statistics of the data
-	analyzer.dataStats()
+	# analyzer.dataStats()
 
-def categoriesInfo():
-	cats = pickle.load(open( "categories.pkl", "rb" ))
-	print(cats)
-	for key in cats:
-		if key[0] == 'auto':
-			print(key)
-			for x in Counter(cats[key]).most_common():
-				print(x)
-			print()
+	# analyzer.patternAnalysis()
 
-def ir(data):
-	# Spacy parser
-	spacyParser = LanguageParser(parser='spacy')
+	# analyzer.plotDependencies()
+	analyzer.dataPlots()
 
-	# Information retrieval
-	loadIR = True
-	ir = InformationRetrieval(spacyParser, data)
-	if (loadIR):
-		ir.loadDataFrame('title')
-	else:
-		ir.createDependencies('title')
-		ir.writeDataFrames()
-
-	# ir.sentenceDepencyRelations()
-	print('auto: ', len(ir.countOccurences('title', ['automobilist'])))
-	print('fiets: ',len(ir.countOccurences('title', ['fiets'])))
-	print('auto-fiets: ',len(ir.countOccurences('title', ['auto','fiets'])))
-
-	# ir.countOccurences('text', ['auto'])
-	# ir.countOccurences('text', ['fiets'])
-	# ir.countOccurences('text', ['auto','fiets'])
-
-	# print(ir.dependencies['text'].loc['auto'])
-	# print(ir.dependencies['text'].loc['automobilist'])
-	# print(ir.dependencies['text'].loc['fiets'])
-	# print(ir.dependencies['text'].loc['fietser'])
 
 if __name__== "__main__":
 	main()
