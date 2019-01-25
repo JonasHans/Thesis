@@ -47,16 +47,39 @@ class TANA():
 	##########################
 
 	def dataPlots(self):
-		# Set labels plot
-		print(self.IR.df['journal'].describe())
-		self.IR.df['journal'].value_counts().head(20).plot(kind='barh')
-		plt.savefig('../plots/journal.png')
-		plt.tight_layout()
-		plt.savefig('../plots/journalLabels.png')
-		plt.close()
+		# Journal plots
+		# self.IR.df['journal'].value_counts().head(20).plot(kind='barh')
+		# plt.savefig('../plots/journal.png')
+		# plt.tight_layout()
+		# plt.savefig('../plots/journalLabels.png')
+		# plt.close()
+		#
+		# self.IR.df['journal'].value_counts().value_counts().sort_index().plot(kind='barh', fontsize=6)
+		# plt.xlabel('Frequency')
+		# plt.ylabel('Amount of articles per journal')
+		# plt.savefig('../plots/journalHist.png')
+		# plt.clf()
 
-		self.IR.df['journal'].value_counts().value_counts().sort_index().plot(kind='barh', fontsize=5)
-		plt.savefig('../plots/journalHist.png')
+		# Date plot
+		# self.IR.df["date"] = self.IR.df["date"].astype("datetime64")
+		# self.IR.df["date"].groupby([self.IR.df["date"].dt.year]).count().plot(kind="bar")
+		# plt.xlabel('Year')
+		# plt.ylabel('Amount of articles')
+		# plt.tight_layout()
+		# plt.savefig('../plots/articleDates.png')
+
+		# KDE plot of title and text length
+		[titles, texts] = self.IR.calcLengths()
+		tpf = pd.DataFrame(titles)
+		tpf.plot(kind='kde', legend=False)
+		plt.xlabel('Amount of words')
+		plt.savefig('../plots/titleLen.png')
+		plt.clf()
+
+		textpf = pd.DataFrame(texts)
+		textpf.plot(kind='kde', legend=False)
+		plt.xlabel('Amount of words')
+		plt.savefig('../plots/textLen.png')
 		plt.clf()
 
 	@timeit

@@ -19,6 +19,25 @@ class InformationRetrieval():
 		self.df = data.dataFrame
 		self.dependencies = {}
 
+	def calcLengths(self):
+		progress = 100
+		titles = []
+		texts = []
+
+		for index, row in self.df.iterrows():
+			textLen = self.parser.getWordsLen(row['text'])
+			titleLen = self.parser.getWordsLen(row['title'])
+
+			# Output progress through set
+			if ((index%100) == 0):
+				print('Progress: '+str(progress)+'/'+str(len(self.df)))
+				progress += 100
+
+			titles.append(titleLen)
+			texts.append(textLen)
+
+		return [titles, texts]
+
 	def nounChunker(self, feature):
 		grammar = "NP: {<DT>?<JJ>*<NN>}"
 		progress = 100

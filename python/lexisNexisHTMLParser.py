@@ -2,6 +2,7 @@
 from bs4 import BeautifulSoup
 import pandas as pd
 from collections import Counter
+import datefinder
 
 # Time keeping
 from utils.timeit import timeit
@@ -89,13 +90,13 @@ class LexisNexisHTMLParser():
 				# Create the article data
 				journal = divs[1].get_text()
 				link = divs[2].get_text()
-				date = divs[3].get_text()
+				date = next(datefinder.find_dates(divs[3].get_text()))
 				title = divs[4].get_text()
 			else:
 				# Create the article data
 				journal = divs[len(divs)-1].get_text()
 				link = divs[1].get_text()
-				date = divs[2].get_text()
+				date = next(datefinder.find_dates(divs[2].get_text()), None)
 				title = divs[3].get_text()
 
 			# Add the article

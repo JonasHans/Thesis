@@ -13,6 +13,9 @@ class LanguageParser():
 	def __init__(self, parser='spacy'):
 		self.parser = parser
 
+	def getWordsLen(self, text):
+		return len(self.NLTKremoveStopwords(nltk.word_tokenize(text)))
+
 	# Dependency parser for data
 	def DEP(self, data, cleanData):
 		deps = []
