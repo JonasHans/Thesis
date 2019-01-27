@@ -69,18 +69,56 @@ class TANA():
 		# plt.savefig('../plots/articleDates.png')
 
 		# KDE plot of title and text length
-		[titles, texts] = self.IR.calcLengths()
-		tpf = pd.DataFrame(titles)
-		tpf.plot(kind='kde', legend=False)
-		plt.xlabel('Amount of words')
-		plt.savefig('../plots/titleLen.png')
-		plt.clf()
+		# [titles, texts] = self.IR.calcLengths()
+		# tpf = pd.DataFrame(titles)
+		# tpf.plot(kind='kde', legend=False)
+		# plt.xlabel('Amount of words')
+		# plt.savefig('../plots/titleLen.png')
+		# plt.clf()
+		#
+		# textpf = pd.DataFrame(texts)
+		# textpf.plot(kind='kde', legend=False)
+		# plt.xlabel('Amount of words')
+		# plt.savefig('../plots/textLen.png')
+		# plt.clf()
 
-		textpf = pd.DataFrame(texts)
-		textpf.plot(kind='kde', legend=False)
-		plt.xlabel('Amount of words')
-		plt.savefig('../plots/textLen.png')
-		plt.clf()
+		# POS tags plot
+		# self.IR.dependencies['title']['NOUN'].sort_values().tail(25).plot(kind='barh')
+		# # self.rankListBySum(self.IR.dependencies['title'][['NN','NNP','NNS']])['sum'].head(25).plot(kind='barh')
+		# plt.tight_layout()
+		# plt.savefig('../plots/titlePOS-NN.png')
+		# plt.close()
+		#
+		# self.IR.dependencies['title']['ADJ'].sort_values().tail(25).plot(kind='barh')
+		# # self.rankListBySum(self.IR.dependencies['title'][['JJ','JJR','JJS']])['sum'].head(25).plot(kind='barh')
+		# plt.tight_layout()
+		# plt.savefig('../plots/titlePOS-JJ.png')
+		# plt.close()
+		#
+		# self.IR.dependencies['title']['VERB'].sort_values().tail(25).plot(kind='barh')
+		# # self.rankListBySum(self.IR.dependencies['title'][['VB','VBD','VBG','VBN','VBP','VBZ']])['sum'].head(25).plot(kind='barh')
+		# plt.tight_layout()
+		# plt.savefig('../plots/titlePOS-VB.png')
+		# plt.close()
+		#
+		# self.IR.dependencies['text']['NOUN'].sort_values().tail(25).plot(kind='barh')
+		# # self.rankListBySum(self.IR.dependencies['text'][['NN','NNP','NNS']])['sum'].head(25).plot(kind='barh')
+		# plt.tight_layout()
+		# plt.savefig('../plots/textPOS-NN.png')
+		# plt.close()
+		#
+		# self.IR.dependencies['text']['ADJ'].sort_values().tail(25).plot(kind='barh')
+		# # self.rankListBySum(self.IR.dependencies['text'][['JJ','JJR','JJS']])['sum'].head(25).plot(kind='barh')
+		# plt.tight_layout()
+		# plt.savefig('../plots/textPOS-JJ.png')
+		# plt.close()
+		#
+		# self.IR.dependencies['text']['VERB'].sort_values().tail(25).plot(kind='barh')
+		# # self.rankListBySum(self.IR.dependencies['text'][['JJ','JJR','JJS']])['sum'].head(25).plot(kind='barh')
+		# plt.tight_layout()
+		# plt.savefig('../plots/textPOS-VB.png')
+		# plt.close()
+		print()
 
 	@timeit
 	def dataStats(self):
@@ -155,6 +193,23 @@ class TANA():
 		return toRank.sort_values(by='sum', ascending=False)
 
 	def patternAnalysis(self):
-		# self.IR.extractPattern('title', ['geschept'])
-		# self.IR.extractPattern2('title', ['aangereden'])
-		self.IR.nounChunker('title')
+		# Plot auto geschept
+		# c = self.IR.extractPattern('title', ['aangereden'])
+		# self.plotCounter(c[1], 'aangereden-nsubj-Dist1')
+		# self.plotCounter(c[2], 'aangereden-obl-Dist1')
+		[subs, obl, roots] = self.IR.extractPattern2('title')
+		self.plotCounter(subs, 'general-nsub-dist')
+		self.plotCounter(obl, 'general-obl-dist')
+		self.plotCounter(roots, 'general-obl-roots')
+		# self.IR.nounChunker('title')
+
+	def plotCounter(self, c, name):
+		labels, values = zip(*c)
+		indexes = np.arange(len(labels))
+		width = 0.75
+
+		plt.barh(indexes, values, width, align='edge')
+		plt.yticks(indexes + width * 0.5, labels)
+		plt.subplots_adjust(left=0.2)
+		plt.savefig('../plots/'+name+'.png')
+		plt.close()

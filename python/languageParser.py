@@ -26,7 +26,8 @@ class LanguageParser():
 
 		# Spacy parses dependencies and nltk POS tags
 		if self.parser == 'spacy':
-			deps = self.spacyDEP(data)
+			# deps = self.spacyDEP(data)
+			deps = self.spacyPOS(data)
 		elif self.parser == 'nltk':
 			deps = self.nltkPOS(data, cleanData)
 
@@ -55,6 +56,13 @@ class LanguageParser():
 					validSents.append(str(sent))
 
 			return validSents
+
+
+	# Spacy dependencies method
+	def spacyPOS(self, data):
+		doc = self.nlp(data)
+
+		return [(token.text, token.pos_) for token in doc]
 
 	# Spacy dependencies method
 	def spacyDEP(self, data):

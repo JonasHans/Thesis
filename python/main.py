@@ -28,7 +28,7 @@ def main():
 	data = LexisNexisHTMLParser(loadLexisNexis)
 
 	# Define language parser
-	spacyParser = LanguageParser(parser='nltk')
+	spacyParser = LanguageParser(parser='spacy')
 
 	# Configure information retrieval
 	ir = InformationRetrieval(spacyParser, data)
@@ -39,10 +39,10 @@ def main():
 	# Basic statistics of the data
 	# analyzer.dataStats()
 
-	# analyzer.patternAnalysis()
+	analyzer.patternAnalysis()
 
 	# analyzer.plotDependencies()
-	analyzer.dataPlots()
+	# analyzer.dataPlots()
 
 
 if __name__== "__main__":

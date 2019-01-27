@@ -56,12 +56,13 @@ class InformationRetrieval():
 			print(result)
 			print()
 
-	def extractPattern2(self, feature, terms):
+	def extractPattern2(self, feature):
 		progress = 100
 		intersections = {}
 
 		subjects = []
 		roots = []
+		obls = []
 		count = 0
 		for index, row in self.df.iterrows():
 			text = row[feature]
@@ -82,6 +83,8 @@ class InformationRetrieval():
 				if dep[1] == 'ROOT':
 					root = dep[0]
 					roots.append(dep[0])
+				if dep[1] == 'obl':
+					obls.append(dep[0])
 
 			if sub and root:
 				count += 1
@@ -90,13 +93,14 @@ class InformationRetrieval():
 				else:
 					intersections[sub].append(root)
 
-		for x in Counter(subjects).most_common(10):
-			print(x[0])
-			print(self.pp.pformat(Counter(intersections[x[0]]).most_common()))
-		print(count)
+		# for x in Counter(subjects).most_common(10):
+		# 	print(x[0])
+		# 	print(self.pp.pformat(Counter(intersections[x[0]]).most_common()))
+		# print(count)
 		# print(self.pp.pformat(Counter(subjects).most_common(10)))
 		# print()
 		# print(self.pp.pformat(Counter(roots).most_common(5)))
+		return [Counter(subjects).most_common(15),Counter(obls).most_common(15),Counter(roots).most_common(15)]
 
 	def extractPattern(self, feature, terms):
 		counts = {
@@ -106,8 +110,11 @@ class InformationRetrieval():
 		vru = []
 		cause = []
 		progress = 100
-		# intersections = {}
+		nsubjs = []
+		obls = []
+		case = []
 
+		deps = []
 		for index, row in self.df.iterrows():
 			text = row[feature]
 
@@ -132,9 +139,14 @@ class InformationRetrieval():
 					subj = ""
 					obl = ""
 					for dep in sentDEPS:
+						deps.append(dep[1])
+						if (dep[1] == 'case'):
+							case.append(dep[0])
 						if (dep[1] == 'nsubj'):
+							nsubjs.append(dep[0])
 							subj = dep[0]
 						if (dep[1] == 'obl'):
+							obls.append(dep[0])
 							obl = dep[0]
 						if (dep[0] == 'geschept') and (dep[1] == 'ROOT'):
 							# print(sentDEPS)
@@ -143,19 +155,9 @@ class InformationRetrieval():
 						counts['valid'] += 1
 						vru.append(subj)
 						cause.append(obl)
-						# nouns = []
-						# for tag in sentPOS:
-						# 	if (tag[1] == 'NN'):
-						# 		nouns.append(tag[0])
-						# print(counts['valid'], text)
-						# print("subject: ",subj)
-						# print("oblique nominal: ",obl)
 					else:
 						print('not valid: ', text)
-		print(self.pp.pformat(Counter(vru).most_common()))
-		print(self.pp.pformat(Counter(cause).most_common()))
-		print(counts)
-
+		return [Counter(deps).most_common(15),Counter(nsubjs).most_common(15),Counter(obls).most_common(15),Counter(case).most_common(15)]
 
 	@timeit
 	def createSubset(self, feature, mainTerms, secondaryTerms, fileName):
