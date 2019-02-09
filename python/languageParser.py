@@ -66,6 +66,7 @@ class LanguageParser():
 
 	# Spacy dependencies method
 	def spacyDEP(self, data):
+		data = " ".join(self.NLTKlowerCaseTokens(nltk.word_tokenize(data)))
 		doc = self.nlp(data)
 
 		return [(token.text, token.dep_) for token in doc]

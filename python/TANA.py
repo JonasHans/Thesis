@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import pickle
 import numpy as np
+import seaborn as sns
 
 # Time keeping
 from utils.timeit import timeit
@@ -81,6 +82,18 @@ class TANA():
 		# plt.xlabel('Amount of words')
 		# plt.savefig('../plots/textLen.png')
 		# plt.clf()
+
+		# sns.set_style('darkgrid')
+		# plt2 = sns.distplot(titles, kde=True, hist=True)
+		# plt2.set(xlabel='Amount of words')
+		# plt2.get_figure().savefig('../plots/seabornTitles.png')
+		# plt.clf()
+		#
+		# sns.set_style('darkgrid')
+		# plt2 = sns.distplot(texts, kde=True, hist=True)
+		# plt2.set(xlim=(0, 400))
+		# plt2.set(xlabel='Amount of words')
+		# plt2.get_figure().savefig('../plots/seabornText.png')
 
 		# POS tags plot
 		# self.IR.dependencies['title']['NOUN'].sort_values().tail(25).plot(kind='barh')
@@ -194,13 +207,14 @@ class TANA():
 
 	def patternAnalysis(self):
 		# Plot auto geschept
-		# c = self.IR.extractPattern('title', ['aangereden'])
-		# self.plotCounter(c[1], 'aangereden-nsubj-Dist1')
-		# self.plotCounter(c[2], 'aangereden-obl-Dist1')
+		# [deps, subs, obls] = self.IR.extractPattern('title', ['geschept'])
+		# self.plotCounter(subs, 'stap5-nsubj-Dist1-aangereden')
+		# self.plotCounter(obls, 'stap5-obl-Dist1-aangereden')
+
 		[subs, obl, roots] = self.IR.extractPattern2('title')
-		self.plotCounter(subs, 'general-nsub-dist')
-		self.plotCounter(obl, 'general-obl-dist')
-		self.plotCounter(roots, 'general-obl-roots')
+		# self.plotCounter(subs, 'stap6-general-nsub-dist')
+		# self.plotCounter(obl, 'stap6-general-obl-dist')
+		# self.plotCounter(roots, 'stap6-general-obl-roots')
 		# self.IR.nounChunker('title')
 
 	def plotCounter(self, c, name):

@@ -84,18 +84,25 @@ class InformationRetrieval():
 					root = dep[0]
 					roots.append(dep[0])
 				if dep[1] == 'obl':
+					obl = dep[0]
 					obls.append(dep[0])
 
 			if sub and root:
-				count += 1
-				if not sub in intersections:
-					intersections[sub] = [root]
-				else:
-					intersections[sub].append(root)
 
-		# for x in Counter(subjects).most_common(10):
-		# 	print(x[0])
-		# 	print(self.pp.pformat(Counter(intersections[x[0]]).most_common()))
+				count += 1
+				if not root in intersections:
+					intersections[root] = {
+					'sub': [],
+					'obl' : []
+					}
+				intersections[root]['sub'].append(sub)
+				intersections[root]['obl'].extend(obls)
+			obls = []
+
+		for x in Counter(roots).most_common(6):
+			print(x[0])
+			print(self.pp.pformat(Counter(intersections[x[0]]['sub']).most_common(5)))
+			print(self.pp.pformat(Counter(intersections[x[0]]['obl']).most_common(5)))
 		# print(count)
 		# print(self.pp.pformat(Counter(subjects).most_common(10)))
 		# print()
@@ -129,7 +136,7 @@ class InformationRetrieval():
 				# For efficieny we filter only relevant sentences
 				if all(x in text for x in terms):
 					counts['total'] += 1
-					sentPOS = self.parser.nltkPOS(text, True)
+					# sentPOS = self.parser.nltkPOS(text, True)
 					sentDEPS = self.parser.spacyDEP(text)
 					key = ""
 					val = ""
@@ -138,6 +145,7 @@ class InformationRetrieval():
 					val = False
 					subj = ""
 					obl = ""
+					oblCount = 0
 					for dep in sentDEPS:
 						deps.append(dep[1])
 						if (dep[1] == 'case'):
@@ -146,18 +154,23 @@ class InformationRetrieval():
 							nsubjs.append(dep[0])
 							subj = dep[0]
 						if (dep[1] == 'obl'):
+							oblCount += 1
 							obls.append(dep[0])
 							obl = dep[0]
 						if (dep[0] == 'geschept') and (dep[1] == 'ROOT'):
 							# print(sentDEPS)
 							val = True
+
 					if val:
+						print(subj)
+						# print(text)
 						counts['valid'] += 1
 						vru.append(subj)
 						cause.append(obl)
 					else:
 						print('not valid: ', text)
-		return [Counter(deps).most_common(15),Counter(nsubjs).most_common(15),Counter(obls).most_common(15),Counter(case).most_common(15)]
+		print(counts)
+		return [Counter(deps).most_common(15),Counter(nsubjs).most_common(15),Counter(obls).most_common(15)]
 
 	@timeit
 	def createSubset(self, feature, mainTerms, secondaryTerms, fileName):
